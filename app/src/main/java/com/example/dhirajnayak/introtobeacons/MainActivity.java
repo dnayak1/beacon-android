@@ -38,10 +38,11 @@ public class MainActivity extends AppCompatActivity {
 
     private String placesNearBeacon(Beacon beacon) {
         String beaconKey = String.format("%d:%d", beacon.getMajor(), beacon.getMinor());
+        String tempUrl= "http://13.59.212.226:5000/api/allProducts";
         if (PLACES_BY_BEACONS.containsKey(beaconKey)) {
-            return PLACES_BY_BEACONS.get(beaconKey);
+            tempUrl= PLACES_BY_BEACONS.get(beaconKey);
         }
-        return "http://13.59.212.226:5000/api/allProducts";
+        return tempUrl ;
     }
 
     @Override
@@ -55,9 +56,17 @@ public class MainActivity extends AppCompatActivity {
             public void onBeaconsDiscovered(BeaconRegion region, List<Beacon> list) {
                 if (!list.isEmpty()) {
                     Beacon nearestBeacon = list.get(0);
-                    url = placesNearBeacon(nearestBeacon);
+                    String urlCheck = placesNearBeacon(nearestBeacon);
                     // TODO: update the UI here
                     Log.d("URl", " : " + url);
+                    if(!url.equals(urlCheck)){
+                        url=urlCheck;
+                        Intent productIntent=new Intent(MainActivity.this,ProductsActivity.class);
+                        productIntent.putExtra("URL",url);
+                        startActivity(productIntent);
+                    }
+
+
                 }else{
                     url="http://13.59.212.226:5000/api/allProducts";
                 }
@@ -67,9 +76,7 @@ public class MainActivity extends AppCompatActivity {
                 UUID.fromString("B9407F30-F5F8-466E-AFF9-25556B57FE6D"), null, null);
 
 
-            Intent productIntent=new Intent(MainActivity.this,ProductsActivity.class);
-            productIntent.putExtra("URL",url);
-            startActivity(productIntent);
+
 
 
 
@@ -93,6 +100,10 @@ public class MainActivity extends AppCompatActivity {
                 beaconManager.startRanging(region);
             }
         });
+
+        Intent productIntent=new Intent(MainActivity.this,ProductsActivity.class);
+        productIntent.putExtra("URL",url);
+        startActivity(productIntent);
     }
 
     @Override
