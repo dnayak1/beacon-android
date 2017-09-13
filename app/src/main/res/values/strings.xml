@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">IntroToBeacons</string>
+    <string name="btn_show_all_products">Show All Products</string>
+    <string name="textView_message">Please turn on bluetooth and move in the beacon range</string>
+</resources>

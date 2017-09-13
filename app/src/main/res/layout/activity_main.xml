@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.dhirajnayak.introtobeacons.MainActivity">
+
+
+    <Button
+        android:id="@+id/buttonShowAllProducts"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="217dp"
+        android:text="Button"
+        tools:text="@string/btn_show_all_products" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/buttonShowAllProducts"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="110dp"
+        android:text="TextView"
+        tools:text="@string/textView_message" />
+</RelativeLayout>
