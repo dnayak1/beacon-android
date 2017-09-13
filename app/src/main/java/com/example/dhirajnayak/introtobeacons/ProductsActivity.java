@@ -12,12 +12,14 @@ public class ProductsActivity extends AppCompatActivity implements ProductAsyncT
     RecyclerView recyclerView;
     ProductRecyclerAdapter adapter;
     LinearLayoutManager layoutManager;
+    String url;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_products);
         recyclerView= (RecyclerView) findViewById(R.id.recyclerView);
-        new ProductAsyncTask(this).execute("http://13.59.212.226:5000/api/allProducts");
+        url=getIntent().getExtras().getString("URL");
+        new ProductAsyncTask(this).execute(url);
     }
 
     @Override
