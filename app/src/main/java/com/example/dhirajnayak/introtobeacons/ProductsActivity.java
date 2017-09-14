@@ -12,6 +12,7 @@ public class ProductsActivity extends AppCompatActivity implements ProductAsyncT
     RecyclerView recyclerView;
     ProductRecyclerAdapter adapter;
     LinearLayoutManager layoutManager;
+    String title;
     String url;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,7 +20,14 @@ public class ProductsActivity extends AppCompatActivity implements ProductAsyncT
         setContentView(R.layout.activity_products);
         recyclerView= (RecyclerView) findViewById(R.id.recyclerView);
         url=getIntent().getExtras().getString("URL");
+        if(url.length()<42){
+            title="All Products";
+        }else{
+            title=url.substring(42);
+        }
+        setTitle(title);
         new ProductAsyncTask(this).execute(url);
+
     }
 
     @Override
