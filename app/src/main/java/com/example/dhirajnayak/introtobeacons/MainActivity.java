@@ -6,12 +6,14 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.estimote.coresdk.common.requirements.SystemRequirementsChecker;
 import com.estimote.coresdk.observation.region.beacon.BeaconRegion;
 import com.estimote.coresdk.recognition.packets.Beacon;
 import com.estimote.coresdk.service.BeaconManager;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -20,6 +22,8 @@ import java.util.Map;
 import java.util.UUID;
 
 public class MainActivity extends AppCompatActivity {
+
+    public int[] acceptedMajors = {15212,48071,26535};
 
 
     Button buttonAllProducts;
@@ -55,29 +59,16 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onBeaconsDiscovered(BeaconRegion region, List<Beacon> list) {
                 if (!list.isEmpty()) {
-                    Beacon nearestBeacon = list.get(0);
-                    String urlCheck = placesNearBeacon(nearestBeacon);
-                    // TODO: update the UI here
-                    Log.d("URl", " : " + url);
-                    if(!url.equals(urlCheck)){
-                        url=urlCheck;
-                        Intent productIntent=new Intent(MainActivity.this,ProductsActivity.class);
-                        productIntent.putExtra("URL",url);
-                        startActivity(productIntent);
+                    for (Beacon beacon : list) {
+                        if (beacon.getMajor() == acceptedMajors[0] || beacon.getMajor() == acceptedMajors[0] || beacon.getMajor() == acceptedMajors[0]) {
+                            Toast.makeText(MainActivity.this,"Beacon found",Toast.LENGTH_SHORT);
+                        }
+
                     }
-
-
-                }else{
-                    url="http://13.59.212.226:5000/api/allProducts";
+//                    Beacon nearestBeacon = list.get(0);
                 }
             }
         });
-        region = new BeaconRegion("ranged region",
-                UUID.fromString("B9407F30-F5F8-466E-AFF9-25556B57FE6D"), null, null);
-
-
-
-
 
 
 //        buttonAllProducts= (Button) findViewById(R.id.buttonShowAllProducts);
@@ -89,6 +80,25 @@ public class MainActivity extends AppCompatActivity {
 //            }
 //        });
     }
+
+    /*private void flashPageByBeacon(Beacon beacon){
+        if (region==null){
+            region = new BeaconRegion("ranged region",
+                    UUID.fromString("B9407F30-F5F8-466E-AFF9-25556B57FE6D"), null, null);
+        }
+        String urlCheck = placesNearBeacon(nearestBeacon);
+        // TODO: update the UI here
+        Log.d("URl", " : " + url);
+        if(!url.equals(urlCheck)){
+            url=urlCheck;
+            Intent productIntent=new Intent(MainActivity.this,ProductsActivity.class);
+            productIntent.putExtra("URL",url);
+            startActivity(productIntent);
+        }
+        else{
+        url="http://13.59.212.226:5000/api/allProducts";
+        }
+    }*/
 
     @Override
     protected void onResume() {
@@ -108,7 +118,9 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onPause() {
-        super.onPause();
-        beaconManager.stopRanging(region);
+/*
+super.onPause();
+beaconManager.stopRanging(region);
+*/
     }
 }
