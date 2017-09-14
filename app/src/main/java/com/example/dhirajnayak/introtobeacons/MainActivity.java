@@ -29,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
     String urlCheck="http://13.59.212.226:5000/api/allProducts";
     String url="http://13.59.212.226:5000/api/allProducts";
     int countG=0, countL=0, countP=0;
+    static  int DEFAULT=10;
 
     private static final Map<String, String> PLACES_BY_BEACONS;
     static {
@@ -76,21 +77,21 @@ public class MainActivity extends AppCompatActivity {
                         Beacon nearestBeacon = filteredBeacons.get(0);
                         urlCheck = placesNearBeacon(nearestBeacon);
                         if(urlCheck.equals("http://13.59.212.226:5000/api/allProducts/grocery")){
-                            if(countG<15)
+                            if(countG<DEFAULT)
                                 countG++;
                             if(countP>0)
                                 countP--;
                             if(countL>0)
                                 countL--;
                         } else if (urlCheck.equals("http://13.59.212.226:5000/api/allProducts/lifestyle")){
-                            if(countL<15)
+                            if(countL<DEFAULT)
                                 countL++;
                             if(countP>0)
                                 countP--;
                             if(countG>0)
                                 countG--;
                         } else if(urlCheck.equals("http://13.59.212.226:5000/api/allProducts/produce")){
-                            if(countP<15)
+                            if(countP<DEFAULT)
                                 countL++;
                             if(countL>0)
                                 countL--;
@@ -100,7 +101,7 @@ public class MainActivity extends AppCompatActivity {
                     }
 
                     Log.d("URl", " : " + url);
-                    if((!url.equals(urlCheck)) && (((countG==15 || countL==15 || countP==15) || (countL==0 && countP==0 && countG==0)))){
+                    if((!url.equals(urlCheck)) && ((countG==DEFAULT || countL==DEFAULT || countP==DEFAULT))){
                         url=urlCheck;
                         Intent productIntent=new Intent(MainActivity.this,ProductsActivity.class);
                         productIntent.putExtra("URL",url);
@@ -115,6 +116,12 @@ public class MainActivity extends AppCompatActivity {
                         countL--;
                     else if(countP>0)
                         countP--;
+                    if((!url.equals(urlCheck)) && (countL==0 && countP==0 && countG==0)){
+                        url=urlCheck;
+                        Intent productIntent=new Intent(MainActivity.this,ProductsActivity.class);
+                        productIntent.putExtra("URL",url);
+                        startActivity(productIntent);
+                    }
                 }
             }
         });
