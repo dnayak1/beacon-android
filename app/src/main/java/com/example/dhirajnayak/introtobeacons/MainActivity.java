@@ -14,6 +14,7 @@ import com.estimote.coresdk.service.BeaconManager;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,6 +26,7 @@ public class MainActivity extends AppCompatActivity {
     Button buttonAllProducts;
     private BeaconManager beaconManager;
     private BeaconRegion region;
+    String urlCheck="http://13.59.212.226:5000/api/allProducts";
     String url="http://13.59.212.226:5000/api/allProducts";
 
     private static final Map<String, String> PLACES_BY_BEACONS;
@@ -38,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
 
     private String placesNearBeacon(Beacon beacon) {
         String beaconKey = String.format("%d:%d", beacon.getMajor(), beacon.getMinor());
-        String tempUrl= "http://13.59.212.226:5000/api/allProducts";
+        String tempUrl="";
         if (PLACES_BY_BEACONS.containsKey(beaconKey)) {
             tempUrl= PLACES_BY_BEACONS.get(beaconKey);
         }
@@ -55,9 +57,24 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onBeaconsDiscovered(BeaconRegion region, List<Beacon> list) {
                 if (!list.isEmpty()) {
-                    Beacon nearestBeacon = list.get(0);
-                    String urlCheck = placesNearBeacon(nearestBeacon);
-                    // TODO: update the UI here
+                    List<Beacon> filteredBeacons=new ArrayList<Beacon>();
+                    for(int i=0;i<list.size();i++){
+                        Beacon checkBeacon=list.get(i);
+                        if(placesNearBeacon(checkBeacon) !=null && !placesNearBeacon(checkBeacon).isEmpty()){
+                            filteredBeacons.add(checkBeacon);
+                        }
+                    }
+                    Collections.sort(filteredBeacons, new Comparator<Beacon>() {
+                        @Override
+                        public int compare(Beacon beacon, Beacon t1) {
+                            return beacon.getRssi() - t1.getRssi();
+                        }
+                    });
+                    if(!filteredBeacons.isEmpty()){
+                        Beacon nearestBeacon = filteredBeacons.get(0);
+                        urlCheck = placesNearBeacon(nearestBeacon);
+                    }
+
                     Log.d("URl", " : " + url);
                     if(!url.equals(urlCheck)){
                         url=urlCheck;
